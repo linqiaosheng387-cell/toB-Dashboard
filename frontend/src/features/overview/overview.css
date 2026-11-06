@@ -1,0 +1,71 @@
+.overview-page-header{align-items:center;margin-bottom:18px}
+.overview-fixed-metrics,.overview-monthly-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.overview-fixed-metrics{margin-bottom:18px}
+.overview-metric-card{width:100%;height:168px;min-width:0;background:linear-gradient(145deg,rgba(244,247,250,.88) 0%,rgba(229,235,241,.78) 48%,rgba(255,255,255,.95) 100%)!important;border:1px solid rgba(255,255,255,.88)!important;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);box-shadow:inset 0 1px 0 rgba(255,255,255,.96),0 12px 30px rgba(51,65,85,.1)!important}
+.overview-metric-card .ant-card-body{height:100%;display:flex;flex-direction:column;min-width:0}
+.overview-metric-card .kpi-title,.overview-metric-card .kpi-title .ant-typography{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.overview-metric-card .kpi-value{white-space:nowrap;overflow:visible;flex-shrink:0;line-height:1.25;font-size:clamp(17px,1.7vw,25px)}
+.overview-metric-card .kpi-foot{flex-wrap:nowrap;white-space:nowrap;gap:6px;margin-top:auto;min-width:0;min-height:20px;flex-shrink:0}
+.overview-metric-card .kpi-foot .ant-typography-secondary{white-space:nowrap}
+.overview-metric-card.highlight{background:linear-gradient(145deg,rgba(220,240,252,.96) 0%,rgba(191,222,243,.86) 50%,rgba(237,247,253,.96) 100%)!important;border-color:rgba(142,185,215,.72)!important;color:#24445e;box-shadow:inset 0 1px 0 rgba(255,255,255,.98),0 12px 30px rgba(47,118,178,.16)!important}
+.overview-metric-card.highlight .kpi-title,.overview-metric-card.highlight .kpi-title .ant-typography,.overview-metric-card.highlight .kpi-value,.overview-metric-card.highlight .kpi-foot{color:#24445e!important}
+.overview-metric-card.highlight .kpi-value span{color:#54748d!important}
+.overview-metric-card.highlight .kpi-foot .ant-typography-secondary{color:#61798d!important}
+.overview-metric-card.highlight .trend{color:#16a34a!important}
+.overview-metric-card.highlight .trend.down{color:#e11d48!important}
+.overview-metric-card.highlight .anticon{color:inherit}
+.overview-month-filter{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 12px;padding:0 2px}
+.overview-month-filter>div:first-child{display:flex;flex-direction:column;gap:4px}
+.overview-month-filter .ant-typography{font-size:12px}
+.overview-month-control{display:flex;align-items:center;gap:10px}
+.overview-month-control .ant-picker{width:190px;height:38px;border-radius:10px}
+.overview-monthly-metrics{margin-bottom:18px}
+.overview-spend-card{min-height:180px;margin-bottom:18px;border-radius:14px!important;box-shadow:0 8px 24px rgba(15,23,42,.05)}
+.overview-spend-card .ant-card-body{min-height:180px;display:grid;grid-template-columns:225px minmax(0,1fr);align-items:center;gap:24px;padding:17px 19px!important}
+.overview-spend-summary{display:flex;flex-direction:column;gap:5px}
+.overview-spend-summary .ant-typography-secondary{font-size:12px}
+.overview-spend-summary h5{margin:3px 0!important;color:#172033;font-size:21px;font-weight:600}
+.weekly-chart-wrap{position:relative;min-width:0;min-height:150px}
+.weekly-chart{display:block;width:100%;height:150px;overflow:visible}
+.weekly-area{fill:url(#weekly-spend-fill)}
+.weekly-line{fill:none;stroke:#2f76b2;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.weekly-point{cursor:pointer;outline:none}
+.weekly-hit-target{fill:transparent}
+.weekly-dot{fill:#fff;stroke:#2f76b2;stroke-width:3;transition:r .12s ease}
+.weekly-point:focus .weekly-dot{stroke:#173d5e;stroke-width:4}
+.weekly-axis-label{fill:#94a3b8;font-size:10px}
+.weekly-chart-tooltip{position:absolute;z-index:2;top:3px;right:8px;display:flex;flex-direction:column;gap:3px;padding:8px 11px;border:1px solid #d8e6f1;border-radius:9px;background:rgba(255,255,255,.96);box-shadow:0 8px 20px rgba(31,58,86,.12);color:#334155;font-size:11px;pointer-events:none}
+.weekly-chart-tooltip span{color:#2f76b2;font-weight:600;font-variant-numeric:tabular-nums}
+.overview-charts{margin-top:0}
+.dashboard-layout .overview-charts{grid-template-columns:minmax(0,1.7fr) minmax(280px,.9fr)}
+.overview-orders-chart{min-width:0}
+.order-composition-card{min-width:0}
+.order-composition-card .donut-row{gap:10px}
+.order-composition-card .donut{width:112px;height:112px}
+.order-composition-card .donut-legend div{grid-template-columns:8px minmax(72px,1fr) auto;gap:5px;white-space:nowrap;font-size:9px}
+.donut-segment{cursor:pointer;transition:stroke-width .14s ease;outline:none}
+.donut-segment:focus{filter:drop-shadow(0 0 2px rgba(31,58,86,.4))}
+.donut-legend div{transition:color .12s ease}
+.donut-legend div.active{color:#172033;font-weight:600}
+.order-chart-hint{margin-top:2px;color:#94a3b8;font-size:9px}
+.overview-data-error{margin-bottom:16px}
+
+/* The company name is a label in the top bar, not a framed control. */
+.topbar .company-name.ant-btn:not(.side-nav .ant-btn){height:auto!important;padding:0 2px!important;border:0!important;border-width:0!important;border-color:transparent!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#fff!important;font-family:KaiTi,STKaiti,"楷体",serif!important;font-size:23px!important;font-weight:600!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transform:none!important}
+.topbar .company-name.ant-btn:hover{background:transparent!important;color:#e4eff8!important}
+
+@media(max-width:1200px){
+  .overview-spend-card .ant-card-body{grid-template-columns:205px minmax(0,1fr);gap:16px;padding:17px 19px!important}
+  .dashboard-layout .overview-charts{grid-template-columns:1fr}
+}
+@media(max-width:780px){
+  .overview-fixed-metrics,.overview-monthly-metrics{grid-template-columns:1fr}
+  .dashboard-layout .overview-charts{grid-template-columns:1fr}
+  .overview-month-filter{align-items:flex-start;flex-direction:column}
+  .overview-month-control{width:100%;justify-content:space-between}
+  .overview-month-control .ant-picker{width:min(220px,65%)}
+  .overview-spend-card .ant-card-body{grid-template-columns:1fr;gap:8px}
+  .overview-spend-summary{gap:2px}
+  .weekly-chart-wrap{min-height:150px}
+  .weekly-chart{height:150px}
+}
