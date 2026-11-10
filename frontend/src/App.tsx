@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { OverviewDashboard } from './features/overview/OverviewDashboard'
 import type { ReactNode } from 'react'
 import {
@@ -17,6 +17,8 @@ import {
   SafetyCertificateOutlined, SearchOutlined, SettingOutlined, TeamOutlined, UserOutlined,
   WalletOutlined, WarningFilled,
 } from './icons'
+import lagrideLogo from './assets/lagride-logo.png'
+import { AnimatedNumber } from './animations'
 import './styles.css'
 
 const { Header, Sider, Content } = Layout
@@ -68,10 +70,10 @@ const orderRows = Array.from({ length: 10 }, (_, i) => ({ key: i, id: `OD-202610
 
 const rechargeRows = Array.from({ length: 10 }, (_, i) => ({ key: i, id: `EMP-${String(182 + i * 66).padStart(4, '0')}`, name: ['陈可欣', '王志远', '周思妍', '李昊然', '赵文博'][i % 5], amount: money([2000, 1500, 800, 1200, 3000, 600][i % 6]), time: `2026-10-30 ${String(9 - Math.floor(i / 3)).padStart(2, '0')}:${String(15 - i).padStart(2, '0')}`, status: ['已完成', '处理中', '待处理', '已完成', '已拒绝', '失败'][i % 6], result: ['余额已更新', '等待支付通道', '等待审核', '余额已更新', '超出企业额度', '支付渠道超时'][i % 6] }))
 
-function Kpi({ title, value, unit = '', change = '', down = false, highlight = false, showRealtime = true, showComparison = true }: { title: string; value: string; unit?: string; change?: string; down?: boolean; highlight?: boolean; showRealtime?: boolean; showComparison?: boolean }) {
+function Kpi({ title, value, numeric, valueFormat, unit = '', change = '', down = false, highlight = false, showRealtime = true, showComparison = true }: { title: string; value?: string; numeric?: number; valueFormat?: (n: number) => string; unit?: string; change?: string; down?: boolean; highlight?: boolean; showRealtime?: boolean; showComparison?: boolean }) {
   return <Card className={`kpi-card ${highlight ? 'highlight' : ''}`} bordered>
     <div className="kpi-title"><Text>{title}</Text><Tooltip title="口径说明"><InfoCircleOutlined /></Tooltip></div>
-    <div className="kpi-value">{value}<span>{unit}</span></div>
+    <div className="kpi-value">{numeric !== undefined ? <AnimatedNumber value={numeric} format={valueFormat} /> : value}<span>{unit}</span></div>
     {(showComparison || showRealtime) && <div className="kpi-foot">{showComparison && <><span className={down ? 'trend down' : 'trend'}>{down ? <ArrowDownOutlined /> : <ArrowUpOutlined />} {change}</span><Text type="secondary">较上周期</Text></>}{showRealtime && <Tag>实时</Tag>}</div>}
   </Card>
 }
@@ -207,8 +209,8 @@ function EmployeePage({ status, setStatus, onExport }: { status: StatusMode; set
     <PageHeader title="员工详情" sub="Acme Mobility Ltd. · 员工钱包与用车明细" actions={<Button className="export-button" onClick={onExport}>导出Excel</Button>} />
     {status === 'forbidden' || status === 'error' ? <EmptyPanel status={status} /> : <>
       <div className="kpi-grid two employee-total-metrics">
-        <Kpi title="员工总数" value="248" unit="人" change="4.2%" showRealtime={false} />
-        <Kpi title="员工企业钱包总额" value={money(totalEmployeeWallet)} change="6.2%" showRealtime={false} />
+        <Kpi title="员工总数" numeric={248} unit="人" change="4.2%" showRealtime={false} />
+        <Kpi title="员工企业钱包总额" numeric={totalEmployeeWallet} valueFormat={money} change="6.2%" showRealtime={false} />
       </div>
       <EmployeeFilterBar filters={filters} onChange={updateFilters} onSearch={applyFilters} onReset={resetFilters} />
       {status === 'loading' ? <LoadingCards count={3} /> : <>
@@ -218,9 +220,9 @@ function EmployeePage({ status, setStatus, onExport }: { status: StatusMode; set
             <Kpi title="员工支出金额" value="—" change="暂无数据" showRealtime={false} />
             <Kpi title="员工被充值金额" value="—" change="暂无数据" showRealtime={false} />
           </> : <>
-            <Kpi title="打车员工数" value={taxiEmployees.toLocaleString()} unit="人" change="6.5%" showRealtime={false} />
-            <Kpi title="员工支出金额" value={money(employeeSpend)} change="3.1%" down showRealtime={false} />
-            <Kpi title="员工被充值金额" value={money(employeeRecharge)} change="4.8%" showRealtime={false} />
+            <Kpi title="打车员工数" numeric={taxiEmployees} unit="人" change="6.5%" showRealtime={false} />
+            <Kpi title="员工支出金额" numeric={employeeSpend} valueFormat={money} change="3.1%" down showRealtime={false} />
+            <Kpi title="员工被充值金额" numeric={employeeRecharge} valueFormat={money} change="4.8%" showRealtime={false} />
           </>}
         </div>
         <Section title="员工数据明细" meta="默认每页 10 条 · 数据更新时间 14:32">
@@ -265,7 +267,7 @@ function OrderPage({ status, setStatus, onExport }: { status: StatusMode; setSta
         onReset={resetFilters}
       />
       {status === 'loading' ? <LoadingCards count={2} /> : <>
-        <div className="kpi-grid two"><Kpi title="订单数" value="18,642" unit="笔" change="11.7%" showComparison={false} showRealtime={false} /><Kpi title="订单金额" value={money(74820.5)} change="3.1%" down showComparison={false} showRealtime={false} /></div>
+        <div className="kpi-grid two"><Kpi title="订单数" numeric={18642} unit="笔" change="11.7%" showComparison={false} showRealtime={false} /><Kpi title="订单金额" numeric={74820.5} valueFormat={money} change="3.1%" down showComparison={false} showRealtime={false} /></div>
         <Section title="主订单表格" meta={`筛选结果 ${rows.length} 笔`}>
           <Table className="data-table" scroll={{ x: 1520 }} columns={cols} dataSource={status === 'noResult' ? [] : rows} pagination={{ pageSize: 10, size: 'small' }} locale={{ emptyText: <Empty description="未找到匹配结果" /> }} />
         </Section>
@@ -289,7 +291,7 @@ function RechargePage({ status, setStatus, onExport }: { status: StatusMode; set
   const resetFilters = () => { setFilters(initialRechargeFilters); setAppliedFilters(initialRechargeFilters); setStatus('ready') }
   return <><PageHeader title="充值明细" sub="按时间范围、员工与充值状态查询" actions={<Button className="export-button" onClick={onExport}>导出Excel</Button>} />{status === 'forbidden' || status === 'error' ? <EmptyPanel status={status} /> : <>
     <RechargeFilterBar filters={filters} onChange={updateFilters} onSearch={applyFilters} onReset={resetFilters} />
-    {status === 'loading' ? <LoadingCards count={3} /> : <><div className="kpi-grid four recharge-metrics"><Kpi title="充值总金额" value={money(13600)} showComparison={false} showRealtime={false} /><Kpi title="充值队列数" value="42" unit="笔" showComparison={false} showRealtime={false} /><Kpi title="被充值员工数" value="38" unit="人" showComparison={false} showRealtime={false} /></div><Section title="充值记录" meta={`筛选结果 ${rows.length} 笔`}><Table className="data-table" columns={cols} dataSource={status === 'noResult' ? [] : rows} pagination={{ pageSize: 10, size: 'small' }} locale={{ emptyText: <Empty description="未找到匹配结果" /> }} /></Section></>}
+    {status === 'loading' ? <LoadingCards count={3} /> : <><div className="kpi-grid four recharge-metrics"><Kpi title="充值总金额" numeric={13600} valueFormat={money} showComparison={false} showRealtime={false} /><Kpi title="充值队列数" numeric={42} unit="笔" showComparison={false} showRealtime={false} /><Kpi title="被充值员工数" numeric={38} unit="人" showComparison={false} showRealtime={false} /></div><Section title="充值记录" meta={`筛选结果 ${rows.length} 笔`}><Table className="data-table" columns={cols} dataSource={status === 'noResult' ? [] : rows} pagination={{ pageSize: 10, size: 'small' }} locale={{ emptyText: <Empty description="未找到匹配结果" /> }} /></Section></>}
   </>}</>
 }
 
@@ -303,10 +305,47 @@ function Section({ title, meta, children }: { title: ReactNode; meta?: string; c
 
 function Login({ onLogin }: { onLogin: () => void }) { const [loading, setLoading] = useState(false); const [error, setError] = useState(''); const submit = () => { setLoading(true); setError(''); setTimeout(() => { setLoading(false); onLogin() }, 700) }; return <div className="login-page"><div className="login-visual"><div className="login-grid" /><div className="login-glow" /><div className="login-copy"><div className="brand-line"><span className="brand-mark">行</span><span>企业用车数据中心</span></div><h1>让每一笔出行，<br /><em>都清晰可见。</em></h1><p>面向企业客户的用车数据看板，统一查看余额、充值、员工用车与订单消费，让月底对账更轻松。</p></div><svg className="login-chart" viewBox="0 0 430 165"><path className="area" d="M0 128 C53 112 54 105 96 110 S156 70 204 87 S256 43 299 66 S363 24 430 38 V165 H0Z" /><path d="M0 128 C53 112 54 105 96 110 S156 70 204 87 S256 43 299 66 S363 24 430 38" /></svg><div className="login-metrics"><div><strong>18.6k</strong><span>本月订单</span></div><div><strong>₦ 2.4m</strong><span>企业总消费</span></div><div><strong>98.6%</strong><span>订单合规率</span></div></div></div><div className="login-panel"><Card className="login-card"><Title level={2}>欢迎回来</Title><Text type="secondary">登录企业用车数据中心，查看您的用车经营数据。</Text>{error && <div className="login-error"><ExclamationCircleFilled />{error}</div>}<Form layout="vertical" onFinish={submit} style={{ marginTop: 24 }}><Form.Item label="登录账号" name="account" initialValue="admin@acme.com"><Input placeholder="请输入登录账号" /></Form.Item><Form.Item label="密码" name="password" initialValue="password"><Input.Password placeholder="请输入密码" /></Form.Item><Button type="primary" htmlType="submit" block loading={loading}>登录</Button></Form><div className="login-footer">如账号被封锁，请联系系统管理员处理</div></Card></div></div> }
 
+function NavMenu({ page, role, onSelect }: { page: PageKey; role: Role; onSelect: (key: PageKey) => void }) {
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const [indicator, setIndicator] = useState({ top: 0, height: 0, ready: false })
+  const shownNav = navItems.filter((item) => item.key !== 'admin' || role === 'admin')
+
+  const measure = useCallback(() => {
+    const wrap = wrapRef.current
+    const selected = wrap?.querySelector('.ant-menu-item-selected') as HTMLElement | null
+    if (!wrap || !selected) return
+    const wrapRect = wrap.getBoundingClientRect()
+    const itemRect = selected.getBoundingClientRect()
+    setIndicator({ top: itemRect.top - wrapRect.top, height: itemRect.height, ready: true })
+  }, [])
+
+  useLayoutEffect(() => { measure() }, [measure, page, role])
+  useEffect(() => {
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [measure])
+
+  return <div className="nav-menu-wrap" ref={wrapRef}>
+    <div
+      className={`nav-indicator${indicator.ready ? ' ready' : ''}`}
+      style={{ transform: `translateY(${indicator.top}px)`, height: indicator.height }}
+    />
+    <Menu
+      mode="inline"
+      selectedKeys={[page]}
+      onClick={({ key }) => onSelect(key as PageKey)}
+      items={shownNav.map((item) => ({
+        key: item.key,
+        icon: item.icon,
+        label: <div className="nav-label"><strong>{item.title}</strong><small>{item.desc}</small><span className="nav-arrow">↗</span></div>,
+      }))}
+    />
+  </div>
+}
+
 function AppShell({ page, setPage, role, setRole, status, setStatus, onExport, onNewAccount, onEditAccount, onLogout }: { page: PageKey; setPage: (p: PageKey) => void; role: Role; setRole: (r: Role) => void; status: StatusMode; setStatus: (s: StatusMode) => void; onExport: () => void; onNewAccount: () => void; onEditAccount: () => void; onLogout: () => void }) {
-  const shownNav = navItems.filter((item) => item.key !== 'admin' || role === 'admin');
   const content = page === 'overview' ? <OverviewDashboard onExport={onExport} /> : page === 'employees' ? <EmployeePage status={status} setStatus={setStatus} onExport={onExport} /> : page === 'orders' ? <OrderPage status={status} setStatus={setStatus} onExport={onExport} /> : page === 'recharge' ? <RechargePage status={status} setStatus={setStatus} onExport={onExport} /> : <AdminPage role={role} onNewAccount={onNewAccount} onEditAccount={onEditAccount} />
-  return <Layout className="dashboard-layout"><Sider width={280} className="side-nav"><div className="brand"><span className="brand-mark">行</span><div><strong>企业用车数据中心</strong><small>BUSINESS MOBILITY OS</small></div></div><div className="nav-caption">工作台 WORKSPACE</div><Menu mode="inline" selectedKeys={[page]} onClick={({ key }) => { setPage(key as PageKey); setStatus('ready') }} items={shownNav.map(item => ({ key: item.key, icon: item.icon, label: <div className="nav-label"><strong>{item.title}</strong><small>{item.desc}</small><span className="nav-arrow">↗</span></div> }))} /><div className="side-account"><Avatar style={{ background: '#dce9fb', color: '#2563eb' }}>林</Avatar><div><strong>{role === 'admin' ? '林乔生 · Admin' : 'finance@acme.com'}</strong><small>{role === 'admin' ? '正常 · 管理员' : '正常 · 企业账号'}</small></div><Dropdown menu={{ items: [{ key: 'role', label: role === 'admin' ? '切换到企业账号' : '切换到 Admin', onClick: () => setRole(role === 'admin' ? 'tenant' : 'admin') }, { key: 'lock', label: '预览账号被封锁', onClick: () => message.warning('演示：账号已封锁，请联系 Admin 解封') }, { type: 'divider' }, { key: 'logout', label: '退出登录', icon: <LogoutOutlined />, onClick: onLogout }] }}><Button type="text" icon={<MoreOutlined />} /></Dropdown></div></Sider><Layout><Header className="topbar"><Button type="text" className="company-name">{role === 'admin' ? 'Lagride' : '华为'}</Button><div className="topbar-spacer" /><Space><Badge status="success" text={<span className="updated">数据更新于 2026-10-30 14:32</span>} /><Tag>实时</Tag><Dropdown menu={{ items: [{ key: 'tenant', label: '切换到企业账号', onClick: () => setRole('tenant') }, { key: 'logout', label: '退出登录', onClick: onLogout }] }}><Button className="user-button"><Avatar size={22} style={{ background: '#5682ab' }}>林</Avatar>林乔生<DownOutlined /></Button></Dropdown></Space></Header><Content className="page-content">{content}</Content></Layout></Layout>
+  return <Layout className="dashboard-layout"><Sider width={280} className="side-nav"><div className="brand"><img src={lagrideLogo} alt="Lagride" className="brand-logo" /></div><div className="nav-caption">工作台 WORKSPACE</div><NavMenu page={page} role={role} onSelect={(key) => { setPage(key); setStatus('ready') }} /><div className="side-account"><Avatar style={{ background: '#dce9fb', color: '#2563eb' }}>林</Avatar><div><strong>{role === 'admin' ? '林乔生 · Admin' : 'finance@acme.com'}</strong><small>{role === 'admin' ? '正常 · 管理员' : '正常 · 企业账号'}</small></div><Dropdown menu={{ items: [{ key: 'role', label: role === 'admin' ? '切换到企业账号' : '切换到 Admin', onClick: () => setRole(role === 'admin' ? 'tenant' : 'admin') }, { key: 'lock', label: '预览账号被封锁', onClick: () => message.warning('演示：账号已封锁，请联系 Admin 解封') }, { type: 'divider' }, { key: 'logout', label: '退出登录', icon: <LogoutOutlined />, onClick: onLogout }] }}><Button type="text" icon={<MoreOutlined />} /></Dropdown></div></Sider><Layout><Header className="topbar"><Button type="text" className="company-name">{role === 'admin' ? 'Lagride' : '华为'}</Button><div className="topbar-spacer" /><Space><Badge status="success" text={<span className="updated">数据更新于 2026-10-30 14:32</span>} /><Tag>实时</Tag><Dropdown menu={{ items: [{ key: 'tenant', label: '切换到企业账号', onClick: () => setRole('tenant') }, { key: 'logout', label: '退出登录', onClick: onLogout }] }}><Button className="user-button"><Avatar size={22} style={{ background: '#5682ab' }}>林</Avatar>林乔生<DownOutlined /></Button></Dropdown></Space></Header><Content className="page-content" key={page}>{content}</Content></Layout></Layout>
 }
 
 function AccountEditor({ mode, onClose }: { mode: 'new' | 'edit'; onClose: () => void }) {

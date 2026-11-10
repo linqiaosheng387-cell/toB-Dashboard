@@ -1,0 +1,129 @@
+/* ============================================================
+   1. Sidebar sliding indicator
+   ============================================================ */
+.nav-menu-wrap { position: relative }
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #2f76b2 0%, #2f6a9d 100%);
+  box-shadow: 0 8px 18px rgba(31, 58, 86, .16);
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.nav-indicator.ready {
+  opacity: 1;
+  transition: transform .42s cubic-bezier(.65, 0, .35, 1),
+              height .42s cubic-bezier(.65, 0, .35, 1);
+}
+.side-nav .ant-menu { position: relative; z-index: 1 }
+.side-nav .ant-menu-item-selected {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ============================================================
+   2. Page-level staggered entrance
+   ============================================================ */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(18px) }
+  to { opacity: 1; transform: none }
+}
+.page-content > * {
+  animation: rise-in .6s cubic-bezier(.22, .61, .36, 1) both;
+}
+.page-content > *:nth-child(1) { animation-delay: .04s }
+.page-content > *:nth-child(2) { animation-delay: .10s }
+.page-content > *:nth-child(3) { animation-delay: .16s }
+.page-content > *:nth-child(4) { animation-delay: .22s }
+.page-content > *:nth-child(5) { animation-delay: .28s }
+.page-content > *:nth-child(6) { animation-delay: .34s }
+.page-content > *:nth-child(7) { animation-delay: .40s }
+
+/* ============================================================
+   3. Table rows entrance
+   ============================================================ */
+@keyframes row-in {
+  from { opacity: 0; transform: translateY(10px) }
+  to { opacity: 1; transform: none }
+}
+.data-table .ant-table-tbody > tr {
+  animation: row-in .45s cubic-bezier(.22, .61, .36, 1) both;
+}
+.data-table .ant-table-tbody > tr:nth-child(1) { animation-delay: .20s }
+.data-table .ant-table-tbody > tr:nth-child(2) { animation-delay: .24s }
+.data-table .ant-table-tbody > tr:nth-child(3) { animation-delay: .28s }
+.data-table .ant-table-tbody > tr:nth-child(4) { animation-delay: .32s }
+.data-table .ant-table-tbody > tr:nth-child(5) { animation-delay: .36s }
+.data-table .ant-table-tbody > tr:nth-child(6) { animation-delay: .40s }
+.data-table .ant-table-tbody > tr:nth-child(7) { animation-delay: .44s }
+.data-table .ant-table-tbody > tr:nth-child(8) { animation-delay: .48s }
+.data-table .ant-table-tbody > tr:nth-child(9) { animation-delay: .52s }
+.data-table .ant-table-tbody > tr:nth-child(10) { animation-delay: .56s }
+
+/* ============================================================
+   4. SVG line drawing & area fade-in
+   ============================================================ */
+@keyframes path-draw { to { stroke-dashoffset: 0 } }
+.draw-line {
+  stroke-dasharray: var(--path-len);
+  stroke-dashoffset: var(--path-len);
+  animation: path-draw 1.3s cubic-bezier(.4, 0, .2, 1) .25s forwards;
+}
+.draw-line.soft {
+  animation-duration: 1.1s;
+  animation-delay: .45s;
+}
+@keyframes fade-in {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+.draw-area {
+  opacity: 0;
+  animation: fade-in .8s ease .9s forwards;
+}
+
+/* ============================================================
+   5. Donut segment growth
+   ============================================================ */
+@keyframes donut-grow {
+  from {
+    stroke-dasharray: 0 var(--seg-circ);
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dasharray: var(--seg-len) var(--seg-circ);
+    stroke-dashoffset: var(--seg-off);
+  }
+}
+.donut-segment {
+  animation: donut-grow .9s cubic-bezier(.22, .61, .36, 1) both;
+  animation-delay: calc(.25s + var(--i) * .18s);
+}
+.donut-track {
+  opacity: 0;
+  animation: fade-in .5s ease .15s forwards;
+}
+.donut-legend > div {
+  opacity: 0;
+  animation: fade-in .5s ease forwards;
+  animation-delay: calc(.5s + var(--i) * .12s);
+}
+.donut-big, .donut-small {
+  opacity: 0;
+  animation: fade-in .6s ease .35s forwards;
+}
+
+/* ============================================================
+   6. Respect reduced-motion preference
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

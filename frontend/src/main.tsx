@@ -4,6 +4,7 @@ import { ConfigProvider } from 'antd'
 import 'antd/dist/reset.css'
 import './styles.css'
 import './overrides.css'
+import './animations.css'
 import App from './App'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
