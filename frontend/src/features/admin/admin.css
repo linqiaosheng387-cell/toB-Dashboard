@@ -1,0 +1,105 @@
+/* 权限管理（细粒度权限）相关样式 */
+
+/* 账号编辑器：模块行 */
+.module-perm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #e6ebf2;
+  border-radius: 12px;
+  background: #fafbfc;
+  margin-bottom: 10px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.module-perm-row.is-enabled {
+  border-color: #b9d4ee;
+  background: #f4f9ff;
+}
+
+.module-perm-count {
+  font-size: 12px;
+}
+
+/* 模块细粒度配置下拉面板 */
+.perm-popover {
+  width: 260px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.perm-group {
+  margin-bottom: 14px;
+}
+
+.perm-group:last-child {
+  margin-bottom: 0;
+}
+
+.perm-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.perm-group-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 2px;
+}
+
+.perm-group-body .ant-checkbox-wrapper {
+  margin-inline-start: 0;
+}
+
+/* 账号编辑器 */
+.permission-editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18px 0 6px;
+}
+
+.permission-editor-hint {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+
+.permission-editor-modules {
+  margin-top: 6px;
+}
+
+.account-editor-loading {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+/* 模板管理 */
+.tpl-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.tpl-form-modules {
+  margin-top: 8px;
+}
+
+.tpl-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #eef1f5;
+}
+
+.tpl-delete-disabled {
+  font-size: 12px;
+}

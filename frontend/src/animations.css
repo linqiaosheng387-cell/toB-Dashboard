@@ -118,7 +118,27 @@
 }
 
 /* ============================================================
-   6. Respect reduced-motion preference
+   6. Draggable column headers
+   ============================================================ */
+.reorderable-th { cursor: move }
+.col-dragging {
+  opacity: .4 !important;
+  background: #eef5fc !important;
+}
+.col-drag-over { position: relative }
+.col-drag-over::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 3px;
+  border-radius: 2px;
+  background: #2f76b2;
+}
+
+/* ============================================================
+   7. Respect reduced-motion preference
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -51,8 +51,8 @@
 .overview-data-error{margin-bottom:16px}
 
 /* The company name is a label in the top bar, not a framed control. */
-.topbar .company-name.ant-btn:not(.side-nav .ant-btn){height:auto!important;padding:0 2px!important;border:0!important;border-width:0!important;border-color:transparent!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#fff!important;font-family:KaiTi,STKaiti,"楷体",serif!important;font-size:23px!important;font-weight:600!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transform:none!important}
-.topbar .company-name.ant-btn:hover{background:transparent!important;color:#e4eff8!important}
+.topbar .company-name.ant-btn:not(.side-nav .ant-btn){height:auto!important;padding:0 2px!important;border:0!important;border-width:0!important;border-color:transparent!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:#1f3a56!important;font-family:Poppins,'Noto Sans SC','Microsoft YaHei',sans-serif!important;font-size:23px!important;font-weight:600!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transform:none!important}
+.topbar .company-name.ant-btn:hover{background:transparent!important;color:#2f76b2!important}
 
 @media(max-width:1200px){
   .overview-spend-card .ant-card-body{grid-template-columns:205px minmax(0,1fr);gap:16px;padding:17px 19px!important}

@@ -1,0 +1,72 @@
+/* Toolbar sitting between the KPI cards and the table section */
+.order-table-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin: -4px 0 14px;
+}
+.toolbar-icon-btn {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.toolbar-icon-btn .fake-icon { font-size: 16px }
+
+/* Shared popover panel */
+.toolbar-panel { width: 248px }
+.toolbar-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.toolbar-panel-head strong { font-size: 14px; color: #1f2937 }
+.toolbar-panel-head .ant-btn-link {
+  height: auto;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Column visibility checklist */
+.toolbar-panel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.toolbar-panel-list .ant-checkbox-wrapper {
+  font-size: 13px;
+  color: #334155;
+  margin: 0;
+}
+
+/* Status filter form */
+.toolbar-panel-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.toolbar-panel-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.toolbar-panel-field label {
+  font-size: 12px;
+  color: #64748b;
+}
+.toolbar-panel-field .ant-select { width: 100% }
+.toolbar-panel-actions {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 16px;
+}

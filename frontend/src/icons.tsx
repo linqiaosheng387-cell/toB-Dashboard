@@ -33,3 +33,11 @@ export const TeamOutlined = make('♙')
 export const UserOutlined = make('●')
 export const WalletOutlined = make('▣')
 export const WarningFilled = make('!')
+export const ThunderboltOutlined = make('⚡')
+export const GlobalOutlined = make(
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18" />
+    <path d="M12 3c2.6 2.7 3.9 5.7 3.9 9s-1.3 6.3-3.9 9c-2.6-2.7-3.9-5.7-3.9-9s1.3-6.3 3.9-9z" />
+  </svg>
+)
